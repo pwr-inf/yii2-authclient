@@ -92,6 +92,14 @@ class EngineOAuth extends OAuth2
         return $this->api('user', 'GET');
     }
 
+    protected function apiInternal($accessToken, $url, $method, array $params, array $headers)
+    {
+        $params['access_token'] = $accessToken->getToken();
+        $auth = ["Authorization: Bearer " . $accessToken->getToken()];
+
+        return $this->sendRequest($method, $url, $params, array_merge($auth, $headers));
+    }
+
     /**
      * @inheritdoc
      */
